@@ -141,9 +141,9 @@ export function MintPanel() {
           </span>
           <span>{maxSupply !== undefined ? maxSupply.toLocaleString() : "5,000"} supply</span>
         </div>
-        <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/8">
+        <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-black/8">
           <div
-            className="h-full rounded-full bg-[linear-gradient(90deg,#b58cff,#3dffb2)] transition-[width] duration-500"
+            className="h-full rounded-full bg-[linear-gradient(90deg,#ef7a33,#c2540f)] transition-[width] duration-500"
             style={{ width: `${progress ?? 77}%` }}
           />
         </div>
@@ -171,7 +171,7 @@ export function MintPanel() {
             aria-label="Decrease quantity"
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
             disabled={quantity <= 1}
-            className="grid h-10 w-10 place-items-center rounded-xl border border-white/12 text-lg text-bone transition-colors hover:border-wisp/50 disabled:opacity-40"
+            className="grid h-10 w-10 place-items-center rounded-xl border border-black/12 text-lg text-bone transition-colors hover:border-wisp/50 disabled:opacity-40"
           >
             −
           </button>
@@ -185,7 +185,7 @@ export function MintPanel() {
                 className={`h-10 flex-1 rounded-xl border text-sm font-semibold tabular-nums transition-colors ${
                   quantity === option
                     ? "border-wisp/70 bg-wisp/15 text-bone"
-                    : "border-white/12 text-muted hover:border-white/25 hover:text-bone"
+                    : "border-black/12 text-muted hover:border-black/25 hover:text-bone"
                 }`}
               >
                 {option}
@@ -197,7 +197,7 @@ export function MintPanel() {
             aria-label="Increase quantity"
             onClick={() => setQuantity((q) => Math.min(maxPerWallet, q + 1))}
             disabled={quantity >= maxPerWallet}
-            className="grid h-10 w-10 place-items-center rounded-xl border border-white/12 text-lg text-bone transition-colors hover:border-wisp/50 disabled:opacity-40"
+            className="grid h-10 w-10 place-items-center rounded-xl border border-black/12 text-lg text-bone transition-colors hover:border-wisp/50 disabled:opacity-40"
           >
             +
           </button>
@@ -221,13 +221,13 @@ export function MintPanel() {
         )}
 
         {insufficient && (
-          <p className="rounded-xl bg-amber-500/10 px-3 py-2 text-xs text-amber-300">
+          <p className="rounded-xl bg-amber-500/10 px-3 py-2 text-xs text-amber-700">
             Balance looks short for {quantity} spook{quantity > 1 ? "s" : ""} plus gas.
           </p>
         )}
 
         {failure && (
-          <p className="rounded-xl bg-red-500/10 px-3 py-2 text-xs text-red-300">{failure}</p>
+          <p className="rounded-xl bg-red-500/10 px-3 py-2 text-xs text-red-700">{failure}</p>
         )}
 
         {receipt.isSuccess && hash && (
@@ -257,13 +257,13 @@ export function MintPanel() {
         {!gen1MintConfigured && (
           <p className="text-[0.7rem] leading-relaxed text-muted">
             Preview mode: set{" "}
-            <code className="rounded bg-white/8 px-1 py-0.5 text-bone/80">NEXT_PUBLIC_GEN1_CONTRACT</code>{" "}
+            <code className="rounded bg-black/6 px-1 py-0.5 text-bone/80">NEXT_PUBLIC_GEN1_CONTRACT</code>{" "}
             to a deployed mint contract to enable the transaction.
           </p>
         )}
       </div>
 
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-2 border-t border-white/8 pt-4 text-[0.7rem] text-muted">
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-2 border-t border-hairline pt-4 text-[0.7rem] text-muted">
         <span>Contract</span>
         {gen1MintConfigured ? (
           <a

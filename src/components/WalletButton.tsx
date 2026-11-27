@@ -87,7 +87,7 @@ export function WalletButton({ className = "" }: { className?: string }) {
               aria-selected={false}
               onClick={() => connect({ connector })}
               disabled={isPending}
-              className="flex w-full items-center justify-between gap-2 rounded-xl px-3 py-2.5 text-left text-sm text-bone/85 transition-colors hover:bg-white/6 hover:text-bone disabled:opacity-50"
+              className="flex w-full items-center justify-between gap-2 rounded-xl px-3 py-2.5 text-left text-sm text-bone/85 transition-colors hover:bg-black/5 hover:text-bone disabled:opacity-50"
             >
               {connector.name}
               <span className="text-[0.6rem] uppercase tracking-[0.14em] text-muted">
@@ -96,7 +96,7 @@ export function WalletButton({ className = "" }: { className?: string }) {
             </button>
           ))}
           {message && (
-            <p className="mt-1 rounded-xl bg-red-500/10 px-3 py-2 text-xs text-red-300">{message}</p>
+            <p className="mt-1 rounded-xl bg-red-500/10 px-3 py-2 text-xs text-red-700">{message}</p>
           )}
         </div>
       )}

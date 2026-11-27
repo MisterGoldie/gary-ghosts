@@ -44,14 +44,14 @@ export function WaitlistForm() {
             if (status === "invalid") setStatus("idle");
           }}
           placeholder="you@haunted.house"
-          className="w-full min-w-0 rounded-full border border-white/12 bg-white/4 px-5 py-3 text-sm text-bone placeholder:text-muted/70 focus:border-wisp/60 focus:outline-none"
+          className="w-full min-w-0 rounded-full border border-hairline bg-white px-5 py-3 text-sm text-bone placeholder:text-muted/70 focus:border-wisp/60 focus:outline-none"
         />
         <button type="submit" className="btn btn-primary shrink-0">
           Join allowlist
         </button>
       </div>
       {status === "invalid" ? (
-        <p className="pl-2 text-xs text-red-300">That email looks a little cursed. Try again.</p>
+        <p className="pl-2 text-xs text-red-700">That email looks a little cursed. Try again.</p>
       ) : (
         <p className="pl-2 text-xs text-muted">
           Demo form — no backend wired yet. Gen 1 holders are auto-allowlisted.

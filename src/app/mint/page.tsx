@@ -115,9 +115,9 @@ export default function MintPage() {
           <MintPanel />
           <p className="mt-4 text-center text-xs text-muted">
             Trouble minting?{" "}
-            <Link href="/#faq" className="text-wisp underline underline-offset-2">
-              Read the FAQ
-            </Link>
+            <a href={links.discord} className="text-wisp underline underline-offset-2">
+              Ask in the ghost den
+            </a>
           </p>
         </div>
       </div>
