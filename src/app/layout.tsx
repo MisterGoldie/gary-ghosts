@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Architects_Daughter, Caveat_Brush } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 
-const display = Space_Grotesk({
+const display = Caveat_Brush({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: "400",
   variable: "--font-display-google",
   display: "swap",
 });
 
-const body = Inter({
+const body = Architects_Daughter({
   subsets: ["latin"],
+  weight: "400",
   variable: "--font-body-google",
   display: "swap",
 });

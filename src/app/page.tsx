@@ -7,7 +7,7 @@ export default function HomePage() {
       <HeroCrossfade />
 
       <h1 className="mt-8 font-display text-5xl font-bold leading-none sm:text-6xl">
-        Gary <span className="text-wisp">Ghost</span>
+        Gary <span className="text-wisp">Ghosts</span>
       </h1>
 
       <p className="mt-4 max-w-sm text-base leading-relaxed text-muted">
@@ -16,7 +16,7 @@ export default function HomePage() {
 
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
         <Link href="/mint" className="btn btn-primary">
-          Mint Gen 1
+          OG Collection
         </Link>
         <Link href="/afterlife" className="btn btn-outline">
           Gen 2

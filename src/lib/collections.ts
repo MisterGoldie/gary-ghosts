@@ -1,4 +1,4 @@
-import { gen1PriceEth } from "./config";
+import { gen1FloorEth, gen1PriceEth, gen1Supply } from "./config";
 
 export type CollectionStatus = "live" | "upcoming";
 
@@ -21,18 +21,17 @@ export type Collection = {
 export const collections: Collection[] = [
   {
     id: "gen1",
-    name: "Spectral Society",
-    subtitle: "Gen 1",
+    name: "Gary Ghosts",
+    subtitle: "OG Collection",
     status: "live",
-    supply: "5,000",
+    supply: gen1Supply.toLocaleString(),
     price: `${gen1PriceEth} ETH`,
     chain: "Ethereum",
-    blurb:
-      "The original 5,000 spooks. Each one is a fully on-chain misfit with a residency permit for the afterlife — hand-drawn, randomised, and mildly haunted.",
+    blurb: `The original ${gen1Supply} ghosts — hand-drawn, randomised, and minted out at ${gen1PriceEth} ETH. The only way in now is the secondary market.`,
     highlights: [
-      "5,000 generative portraits",
-      "Mint open · max 5 per wallet",
-      "Holder-only ghost den access",
+      `${gen1Supply} hand-drawn ghosts`,
+      "Sold out · trade on OpenSea",
+      "Art pinned to IPFS",
     ],
     href: "/mint",
     cta: "Mint Gen 1",
@@ -72,10 +71,10 @@ export const collections: Collection[] = [
 ];
 
 export const stats = [
-  { label: "Gen 1 supply", value: "5,000" },
-  { label: "Minted", value: "3,842" },
-  { label: "Holders", value: "2,847" },
-  { label: "Floor", value: "0.11 ETH" },
+  { label: "Supply", value: gen1Supply.toLocaleString() },
+  { label: "Minted", value: gen1Supply.toLocaleString() },
+  { label: "Holders", value: "206" },
+  { label: "Floor", value: `${gen1FloorEth} ETH` },
 ];
 
 export const roadmap = [
@@ -108,11 +107,11 @@ export const roadmap = [
 export const faqs = [
   {
     q: "What actually is Gary Ghost?",
-    a: "A ghost. Gary. He has two collections: Spectral Society (Gen 1, live now) and Afterlife Arcade (Gen 2, in one month). Both are generative portrait collections on Ethereum.",
+    a: "A ghost. Gary. The OG Collection is 750 hand-drawn Gary Ghosts on Ethereum — all minted out. Afterlife Arcade (Gen 2) is the follow-up.",
   },
   {
-    q: "How much does minting cost?",
-    a: `Gen 1 is ${gen1PriceEth} ETH plus gas, capped at 5 per wallet. Gen 2 pricing is announced with the allowlist — Gen 1 holders get one free claim.`,
+    q: "How much does a ghost cost?",
+    a: `The mint sold out at ${gen1PriceEth} ETH plus gas, one ghost per transaction. New ones are bought from holders on the secondary market — the OpenSea floor was around ${gen1FloorEth} ETH at the time of writing.`,
   },
   {
     q: "Do I need a wallet?",
