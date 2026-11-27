@@ -123,7 +123,7 @@ export default function MintPage() {
           <p className="mt-4 text-center text-xs text-muted">
             Trouble buying?{" "}
             <a href={links.discord} className="text-wisp underline underline-offset-2">
-              Ask in the ghost den
+              Reach out to Goldie in Discord
             </a>
           </p>
         </div>

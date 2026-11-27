@@ -48,7 +48,7 @@ export const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJ
 
 export const links = {
   x: process.env.NEXT_PUBLIC_LINK_X ?? "https://x.com/GoldiesNFTart",
-  discord: process.env.NEXT_PUBLIC_LINK_DISCORD ?? "https://discord.com",
+  discord: process.env.NEXT_PUBLIC_LINK_DISCORD ?? "https://discord.gg/7f6EQhswWt",
   opensea: process.env.NEXT_PUBLIC_LINK_OPENSEA ?? "https://opensea.io/collection/gary-ghosts",
   openseaV2: process.env.NEXT_PUBLIC_LINK_OPENSEA_V2 ?? "https://opensea.io/collection/gary-ghosts-v2",
   etherscan: process.env.NEXT_PUBLIC_LINK_ETHERSCAN ?? "https://etherscan.io",
