@@ -86,7 +86,7 @@ export default function V2Page() {
           <h2 className="font-display text-2xl font-semibold">Explore the original collection</h2>
           <p className="mt-2 max-w-md text-sm text-muted">The original Gary Ghosts are available to mint on Ethereum.</p>
         </div>
-        <Link href="/mint" className="btn btn-primary shrink-0">Mint OG collection</Link>
+        <Link href="/mint" className="btn btn-primary shrink-0 self-center sm:self-auto">Mint OG collection</Link>
       </section>
 
       <p className="mt-12 break-all border-t border-hairline/70 pt-6 text-center text-xs leading-relaxed text-muted">
