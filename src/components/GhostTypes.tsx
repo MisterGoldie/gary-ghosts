@@ -95,7 +95,7 @@ export function GhostTypes() {
             aria-haspopup="dialog"
             aria-controls="ghost-detail-dialog"
             onClick={(event) => { triggerRef.current = event.currentTarget; setSelected(ghost); }}
-            className="group panel min-w-0 cursor-pointer overflow-hidden p-1 text-bone transition-colors hover:border-wisp/50 focus-visible:-outline-offset-4"
+            className="group panel min-w-0 cursor-pointer overflow-hidden p-1 text-center text-bone transition-colors hover:border-wisp/50 focus-visible:-outline-offset-4"
           >
             <Image
               src={ghost.image}
@@ -105,9 +105,9 @@ export function GhostTypes() {
               sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 210px"
               className="aspect-square w-full object-contain mix-blend-multiply"
             />
-            <span className="mt-3 flex min-h-12 items-center justify-center gap-2">
-              <span className="font-display text-base font-semibold leading-snug sm:text-lg">{ghost.name}</span>
-              <span aria-hidden="true" className="shrink-0 text-xl text-wisp">+</span>
+            <span className="relative mt-3 flex min-h-12 items-center justify-center px-5">
+              <span className="w-full text-center font-display text-base font-semibold leading-snug sm:text-lg">{ghost.name}</span>
+              <span aria-hidden="true" className="absolute right-1 top-1/2 -translate-y-1/2 text-xl text-wisp">+</span>
             </span>
             <span className="mt-1 block text-center text-xs text-muted">More information</span>
           </button>
@@ -145,7 +145,7 @@ export function GhostTypes() {
                 sizes="(max-width: 640px) 90vw, 420px"
                 className="mx-auto aspect-square max-h-[45dvh] w-full object-contain mix-blend-multiply sm:max-h-[65dvh]"
               />
-              <div>
+              <div className="text-center">
                 <h3 id="ghost-detail-name" className="font-display text-3xl font-semibold sm:text-4xl">{selected.name}</h3>
                 <p id="ghost-detail-description" className="mt-4 text-base leading-relaxed text-muted">{selected.description}</p>
               </div>
