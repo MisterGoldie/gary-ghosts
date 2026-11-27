@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { formatEther, parseEther } from "viem";
 import {
   useAccount,
   useBalance,
+  usePublicClient,
   useReadContract,
   useSwitchChain,
   useWaitForTransactionReceipt,
@@ -27,22 +28,23 @@ import { WalletButton } from "./WalletButton";
 export function MintPanel() {
   const hydrated = useHydrated();
   const { address, isConnected, chainId } = useAccount();
-  const { switchChain, isPending: isSwitching } = useSwitchChain();
+  const { switchChainAsync, isPending: isSwitching } = useSwitchChain();
+  const publicClient = usePublicClient({ chainId: targetChain.id });
 
   const readsEnabled = gen1MintConfigured;
-  const { data: onchainPrice } = useReadContract({
+  const { data: onchainPrice, isError: priceError, refetch: refetchPrice } = useReadContract({
     address: gen1Contract,
     chainId: targetChain.id,
     abi: mintAbi,
     functionName: "GHOST_PRICE",
     query: { enabled: readsEnabled },
   });
-  const { data: minted } = useReadContract({
+  const { data: minted, refetch: refetchMinted } = useReadContract({
     address: gen1Contract,
     chainId: targetChain.id,
     abi: mintAbi,
     functionName: "tokenCount",
-    query: { enabled: readsEnabled },
+    query: { enabled: readsEnabled, refetchInterval: 12_000 },
   });
   const { data: maxTokens } = useReadContract({
     address: gen1Contract,
@@ -51,13 +53,26 @@ export function MintPanel() {
     functionName: "MAX_TOKENS",
     query: { enabled: readsEnabled },
   });
-  const { data: balance } = useBalance({ address, query: { enabled: Boolean(address) } });
+  const { data: balance, refetch: refetchBalance } = useBalance({
+    address,
+    chainId: targetChain.id,
+    query: { enabled: Boolean(address) },
+  });
 
   const unitPrice = useMemo(() => onchainPrice ?? parseEther(gen1PriceEth), [onchainPrice]);
 
   const { writeContractAsync, isPending: isSigning, error: writeError, reset } = useWriteContract();
   const [hash, setHash] = useState<`0x${string}` | undefined>();
-  const receipt = useWaitForTransactionReceipt({ hash });
+  const [isChecking, setIsChecking] = useState(false);
+  const [actionError, setActionError] = useState<string | null>(null);
+  const receipt = useWaitForTransactionReceipt({ hash, chainId: targetChain.id });
+  const mintSucceeded = receipt.data?.status === "success";
+
+  useEffect(() => {
+    if (!mintSucceeded) return;
+    void refetchMinted();
+    void refetchBalance();
+  }, [mintSucceeded, refetchMinted, refetchBalance]);
 
   const wrongChain = isConnected && chainId !== targetChain.id;
   const insufficient = Boolean(balance && balance.value < unitPrice);
@@ -68,22 +83,42 @@ export function MintPanel() {
       : null;
 
   async function handleMint() {
-    if (!gen1MintConfigured) return;
+    if (!gen1MintConfigured || !address || isChecking || isSigning || hash) return;
+    setActionError(null);
     if (wrongChain) {
-      switchChain({ chainId: targetChain.id });
+      try {
+        await switchChainAsync({ chainId: targetChain.id });
+      } catch (error) {
+        setActionError(errorMessage(error));
+      }
       return;
     }
+    if (!publicClient || onchainPrice === undefined) return;
+    setIsChecking(true);
+    reset();
     try {
-      const txHash = await writeContractAsync({
+      // Check the real contract before asking the wallet to send a paid transaction.
+      const mintRequest = {
         address: gen1Contract,
         abi: mintAbi,
-        functionName: "GhostMint",
-        value: unitPrice,
-      });
+        functionName: "GhostMint" as const,
+        account: address,
+        value: onchainPrice,
+      };
+      await publicClient.simulateContract(mintRequest);
+      const txHash = await writeContractAsync({ ...mintRequest, chainId: targetChain.id });
       setHash(txHash);
-    } catch {
-      // Surfaced through writeError below.
+    } catch (error) {
+      setActionError(errorMessage(error));
+    } finally {
+      setIsChecking(false);
     }
+  }
+
+  function resetMint() {
+    setHash(undefined);
+    reset();
+    setActionError(null);
   }
 
   let label = "Mint a ghost";
@@ -92,18 +127,23 @@ export function MintPanel() {
   else if (!isConnected) label = "Connect wallet first";
   else if (wrongChain) label = isSwitching ? "Switching…" : `Switch to ${targetChain.name}`;
   else if (isSigning) label = "Confirm in wallet…";
-  else if (receipt.isLoading) label = "Minting…";
+  else if (isChecking) label = "Checking mint…";
+  else if (mintSucceeded) label = "Mint confirmed";
+  else if (hash) label = receipt.isError ? "Check transaction" : "Minting…";
+  else if (priceError && onchainPrice === undefined) label = "Mint price unavailable";
+  else if (onchainPrice === undefined) label = "Loading mint price…";
 
   const disabled =
     !hydrated ||
     !gen1MintConfigured ||
     !isConnected ||
     isSwitching ||
+    isChecking ||
     isSigning ||
-    receipt.isLoading ||
-    receipt.isSuccess;
+    Boolean(hash) ||
+    (!wrongChain && (!publicClient || onchainPrice === undefined));
 
-  const failure = errorMessage(writeError) ?? errorMessage(receipt.error);
+  const failure = actionError ?? errorMessage(writeError) ?? errorMessage(receipt.error);
 
   return (
     <div className="panel p-5 sm:p-7">
@@ -157,15 +197,43 @@ export function MintPanel() {
           {label}
         </button>
 
-        {!isConnected && (
-          <div className="flex justify-center">
-            <WalletButton />
-          </div>
-        )}
+        <div className="flex justify-center">
+          <WalletButton />
+        </div>
 
         <p className="text-center text-[0.7rem] text-muted">
           One ghost per transaction · {formatEther(unitPrice)} ETH + gas
         </p>
+
+        {priceError && onchainPrice === undefined && (
+          <p className="text-center text-xs text-muted">
+            Could not load the mint price.{" "}
+            <button type="button" onClick={() => void refetchPrice()} className="underline underline-offset-2">
+              Try again
+            </button>
+          </p>
+        )}
+
+        {hash && !mintSucceeded && (
+          <div className="text-center text-xs text-muted">
+            <a href={explorerTx(hash)} target="_blank" rel="noreferrer" className="underline underline-offset-2">
+              View transaction
+            </a>
+            {receipt.isError && (
+              <button type="button" onClick={() => void receipt.refetch()} className="ml-3 underline underline-offset-2">
+                Check confirmation again
+              </button>
+            )}
+            {receipt.isError && (
+              <>
+                <p className="mt-2">Check the transaction status before starting another mint.</p>
+                <button type="button" onClick={resetMint} className="mt-2 underline underline-offset-2">
+                  Start another mint
+                </button>
+              </>
+            )}
+          </div>
+        )}
 
         {insufficient && (
           <p className="rounded-xl bg-amber-500/10 px-3 py-2 text-xs text-amber-700">
@@ -177,7 +245,7 @@ export function MintPanel() {
           <p className="rounded-xl bg-red-500/10 px-3 py-2 text-xs text-red-700">{failure}</p>
         )}
 
-        {receipt.isSuccess && hash && (
+        {mintSucceeded && hash && (
           <div className="rounded-xl border border-spectral/30 bg-spectral/10 px-3 py-2.5 text-xs text-spectral">
             <p className="font-semibold">Gary has been summoned.</p>
             <a
@@ -190,10 +258,7 @@ export function MintPanel() {
             </a>
             <button
               type="button"
-              onClick={() => {
-                setHash(undefined);
-                reset();
-              }}
+              onClick={resetMint}
               className="mt-2 block text-spectral/80 underline underline-offset-2 hover:text-spectral"
             >
               Mint another
