@@ -2,6 +2,7 @@ const ZERO = "0x0000000000000000000000000000000000000000";
 
 /** Deployed Gen 1 contract — Gary Ghosts (OG Collection), 750 tokens. */
 const GEN1_DEFAULT = "0x396b3e128bb62a71813f4ef42bbe66ed2cc657df";
+const GEN2_DEFAULT = "0x44fc0be497a6e882aa2c6751315e888df37bace6";
 
 function address(raw: string | undefined): `0x${string}` {
   const value = (raw ?? "").trim();
@@ -14,7 +15,7 @@ export const ZERO_ADDRESS = ZERO as `0x${string}`;
 /** Live collection (Gen 1). Override with NEXT_PUBLIC_GEN1_CONTRACT. */
 export const gen1Contract = address(process.env.NEXT_PUBLIC_GEN1_CONTRACT || GEN1_DEFAULT);
 /** Upcoming collection (Gen 2). */
-export const gen2Contract = address(process.env.NEXT_PUBLIC_GEN2_CONTRACT);
+export const gen2Contract = address(process.env.NEXT_PUBLIC_GEN2_CONTRACT || GEN2_DEFAULT);
 
 export const gen1MintConfigured = gen1Contract !== ZERO_ADDRESS;
 export const gen2MintConfigured = gen2Contract !== ZERO_ADDRESS;
@@ -28,8 +29,19 @@ export const gen1Supply = 750;
 export const gen1FloorEth = "0.02";
 
 export const gen2MintDate = new Date(
-  process.env.NEXT_PUBLIC_GEN2_MINT_DATE ?? "2026-12-26T18:00:00.000Z",
+  process.env.NEXT_PUBLIC_GEN2_MINT_DATE ?? "2026-12-22T14:00:00.000Z",
 );
+
+export const gen2Supply = 750;
+export const gen2LaunchLabel = gen2MintDate.toLocaleString("en-US", {
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+  hour: "numeric",
+  minute: "2-digit",
+  timeZone: "America/Chicago",
+  timeZoneName: "short",
+});
 
 export const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 
@@ -37,6 +49,7 @@ export const links = {
   x: process.env.NEXT_PUBLIC_LINK_X ?? "https://x.com",
   discord: process.env.NEXT_PUBLIC_LINK_DISCORD ?? "https://discord.com",
   opensea: process.env.NEXT_PUBLIC_LINK_OPENSEA ?? "https://opensea.io/collection/gary-ghosts",
+  openseaV2: process.env.NEXT_PUBLIC_LINK_OPENSEA_V2 ?? "https://opensea.io/collection/gary-ghosts-v2",
   etherscan: process.env.NEXT_PUBLIC_LINK_ETHERSCAN ?? "https://etherscan.io",
 };
 

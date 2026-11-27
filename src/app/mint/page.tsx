@@ -13,7 +13,7 @@ import {
 export const metadata: Metadata = {
   title: "Gary Ghosts — OG Collection",
   description:
-    "Gary Ghosts is a 750-piece ERC-721 collection on Ethereum. The mint sold out at 0.05 ETH; ghosts now trade on OpenSea.",
+    "Gary Ghosts is a 750-piece ERC-721 collection on Ethereum. Mint a ghost from the original collection.",
 };
 
 const notes = [
@@ -22,8 +22,8 @@ const notes = [
     body: "Based on one of Gary, Indiana's nicknames. Gary Ghosts originally released in April 2022",
   },
   {
-    title: "Buy from a holder",
-    body: "Ghosts only change hands on the secondary market now — OpenSea is where holders list them.",
+    title: "Mint a ghost",
+    body: "Connect your Ethereum wallet to mint one ghost per transaction.",
   },
   {
     title: "Art lives on IPFS",
@@ -52,7 +52,7 @@ export default function MintPage() {
       <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_0.85fr] lg:items-start">
         <div>
           <span className="chip border-spectral/40 bg-spectral/10 !text-spectral">
-            <span className="h-1.5 w-1.5 rounded-full bg-spectral" /> Sold out
+            <span className="h-1.5 w-1.5 rounded-full bg-spectral" /> Gen 1
           </span>
           <h1 className="mt-4 font-display text-4xl font-bold leading-tight sm:text-5xl">
             Gary Ghosts
@@ -62,8 +62,7 @@ export default function MintPage() {
           </p>
           <p className="mt-4 max-w-lg text-base leading-relaxed text-bone/75">
             The original collection: {gen1Supply} hand-drawn ghosts on Ethereum,
-            minted at {gen1PriceEth} ETH each until the contract hit its cap.
-            Picking one up now means buying from a holder.
+            available to mint at {gen1PriceEth} ETH each plus gas.
           </p>
 
           <div className="mt-6 flex flex-wrap gap-3">

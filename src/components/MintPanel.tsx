@@ -18,7 +18,6 @@ import {
   gen1FloorEth,
   gen1MintConfigured,
   gen1PriceEth,
-  links,
 } from "@/lib/config";
 import { errorMessage } from "@/lib/error";
 import { useHydrated } from "@/lib/useHydrated";
@@ -33,18 +32,21 @@ export function MintPanel() {
   const readsEnabled = gen1MintConfigured;
   const { data: onchainPrice } = useReadContract({
     address: gen1Contract,
+    chainId: targetChain.id,
     abi: mintAbi,
     functionName: "GHOST_PRICE",
     query: { enabled: readsEnabled },
   });
   const { data: minted } = useReadContract({
     address: gen1Contract,
+    chainId: targetChain.id,
     abi: mintAbi,
-    functionName: "totalSupply",
+    functionName: "tokenCount",
     query: { enabled: readsEnabled },
   });
   const { data: maxTokens } = useReadContract({
     address: gen1Contract,
+    chainId: targetChain.id,
     abi: mintAbi,
     functionName: "MAX_TOKENS",
     query: { enabled: readsEnabled },
@@ -58,7 +60,6 @@ export function MintPanel() {
   const receipt = useWaitForTransactionReceipt({ hash });
 
   const wrongChain = isConnected && chainId !== targetChain.id;
-  const soldOut = minted !== undefined && maxTokens !== undefined && minted >= maxTokens;
   const insufficient = Boolean(balance && balance.value < unitPrice);
 
   const progress =
@@ -67,7 +68,7 @@ export function MintPanel() {
       : null;
 
   async function handleMint() {
-    if (!gen1MintConfigured || soldOut) return;
+    if (!gen1MintConfigured) return;
     if (wrongChain) {
       switchChain({ chainId: targetChain.id });
       return;
@@ -98,7 +99,6 @@ export function MintPanel() {
     !gen1MintConfigured ||
     !isConnected ||
     isSwitching ||
-    soldOut ||
     isSigning ||
     receipt.isLoading ||
     receipt.isSuccess;
@@ -114,14 +114,12 @@ export function MintPanel() {
         </div>
         <span
           className={`chip ${
-            soldOut
+            gen1MintConfigured
               ? "border-spectral/40 bg-spectral/10 !text-spectral"
-              : gen1MintConfigured
-                ? "border-spectral/40 bg-spectral/10 !text-spectral"
-                : "border-wisp/40 bg-wisp/10 !text-wisp"
+              : "border-wisp/40 bg-wisp/10 !text-wisp"
           }`}
         >
-          {soldOut ? "Sold out" : gen1MintConfigured ? "Live" : "Preview"}
+          {gen1MintConfigured ? "Live" : "Preview"}
         </span>
       </div>
 
@@ -133,7 +131,7 @@ export function MintPanel() {
         <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-black/8">
           <div
             className="h-full rounded-full bg-[linear-gradient(90deg,#ef7a33,#c2540f)] transition-[width] duration-500"
-            style={{ width: `${progress ?? 100}%` }}
+            style={{ width: `${progress ?? 0}%` }}
           />
         </div>
       </div>
@@ -150,43 +148,24 @@ export function MintPanel() {
       </dl>
 
       <div className="mt-6 space-y-2.5">
-        {soldOut ? (
-          <>
-            <a
-              href={links.opensea}
-              target="_blank"
-              rel="noreferrer"
-              className="btn btn-primary w-full !py-3.5"
-            >
-              Buy on OpenSea ↗
-            </a>
-            <p className="text-center text-[0.7rem] leading-relaxed text-muted">
-              All {maxTokens !== undefined ? maxTokens.toLocaleString() : "750"} ghosts are
-              minted. Secondary market only.
-            </p>
-          </>
-        ) : (
-          <>
-            <button
-              type="button"
-              onClick={handleMint}
-              disabled={disabled}
-              className="btn btn-primary w-full !py-3.5"
-            >
-              {label}
-            </button>
+        <button
+          type="button"
+          onClick={handleMint}
+          disabled={disabled}
+          className="btn btn-primary w-full !py-3.5"
+        >
+          {label}
+        </button>
 
-            {!isConnected && (
-              <div className="flex justify-center">
-                <WalletButton />
-              </div>
-            )}
-
-            <p className="text-center text-[0.7rem] text-muted">
-              One ghost per transaction · {formatEther(unitPrice)} ETH + gas
-            </p>
-          </>
+        {!isConnected && (
+          <div className="flex justify-center">
+            <WalletButton />
+          </div>
         )}
+
+        <p className="text-center text-[0.7rem] text-muted">
+          One ghost per transaction · {formatEther(unitPrice)} ETH + gas
+        </p>
 
         {insufficient && (
           <p className="rounded-xl bg-amber-500/10 px-3 py-2 text-xs text-amber-700">

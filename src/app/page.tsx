@@ -16,10 +16,10 @@ export default function HomePage() {
 
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
         <Link href="/mint" className="btn btn-primary">
-          OG Collection
+          OG
         </Link>
-        <Link href="/afterlife" className="btn btn-outline">
-          Gen 2
+        <Link href="/v2" className="btn btn-outline">
+          V2
         </Link>
       </div>
     </section>

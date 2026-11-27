@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { gen2LaunchLabel } from "@/lib/config";
 
 const display = Caveat_Brush({
   subsets: ["latin"],
@@ -26,18 +27,18 @@ export const metadata: Metadata = {
     template: "%s · Gary Ghost",
   },
   description:
-    "Gary Ghost is an NFT brand with two generative collections: Spectral Society (Gen 1, live now) and Afterlife Arcade (Gen 2, dropping in one month).",
+    "Explore Gary Ghosts and Gary Ghosts V2. V2 launches " + gen2LaunchLabel + ".",
   openGraph: {
     title: "Gary Ghost — Two collections. One ghost.",
     description:
-      "Gen 1 Spectral Society is live. Gen 2 Afterlife Arcade rises in one month.",
+      "The original Gary Ghosts are available to mint. Gary Ghosts V2 launches " + gen2LaunchLabel + ".",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Gary Ghost — Two collections. One ghost.",
     description:
-      "Gen 1 Spectral Society is live. Gen 2 Afterlife Arcade rises in one month.",
+      "The original Gary Ghosts are available to mint. Gary Ghosts V2 launches " + gen2LaunchLabel + ".",
   },
 };
 

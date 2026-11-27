@@ -1,4 +1,4 @@
-import { gen1FloorEth, gen1PriceEth, gen1Supply } from "./config";
+import { gen1FloorEth, gen1PriceEth, gen1Supply, gen2LaunchLabel, gen2Supply } from "./config";
 
 export type CollectionStatus = "live" | "upcoming";
 
@@ -27,10 +27,10 @@ export const collections: Collection[] = [
     supply: gen1Supply.toLocaleString(),
     price: `${gen1PriceEth} ETH`,
     chain: "Ethereum",
-    blurb: `The original ${gen1Supply} ghosts — hand-drawn, randomised, and minted out at ${gen1PriceEth} ETH. The only way in now is the secondary market.`,
+    blurb: `The original ${gen1Supply} ghosts — hand-drawn, randomised, and available to mint at ${gen1PriceEth} ETH plus gas.`,
     highlights: [
       `${gen1Supply} hand-drawn ghosts`,
-      "Sold out · trade on OpenSea",
+      "Mint one ghost per transaction",
       "Art pinned to IPFS",
     ],
     href: "/mint",
@@ -45,35 +45,29 @@ export const collections: Collection[] = [
   },
   {
     id: "gen2",
-    name: "Afterlife Arcade",
-    subtitle: "Gen 2",
+    name: "Gary Ghosts V2",
+    subtitle: "V2",
     status: "upcoming",
-    supply: "2,500",
+    supply: gen2Supply.toLocaleString(),
     price: "TBA",
     chain: "Ethereum",
-    blurb:
-      "Gary found a haunted arcade cabinet. Gen 2 bends the art into low-poly pixel spooks with playable trait perks, launching in one month.",
+    blurb: "A revamped version of the original 2022 Gary Ghosts collection. Launching " + gen2LaunchLabel + ".",
     highlights: [
-      "2,500 pixel spooks",
-      "Allowlist opens 48h early",
-      "Gen 1 holders mint free (1:1)",
+      gen2Supply + " Gary Ghosts",
+      "Launch: " + gen2LaunchLabel,
+      "View the collection on OpenSea",
     ],
-    href: "/afterlife",
-    cta: "See the reveal",
+    href: "/v2",
+    cta: "Explore V2",
     tone: "spectral",
-    traits: [
-      { label: "Cabinets", value: "8" },
-      { label: "Pixels", value: "32px" },
-      { label: "Perks", value: "4" },
-      { label: "Rarities", value: "5" },
-    ],
+    traits: [],
   },
 ];
 
 export const stats = [
   { label: "Supply", value: gen1Supply.toLocaleString() },
-  { label: "Minted", value: gen1Supply.toLocaleString() },
-  { label: "Holders", value: "206" },
+  // Etherscan holder snapshot, checked November 26, 2026.
+  { label: "Holders", value: "199" },
   { label: "Floor", value: `${gen1FloorEth} ETH` },
 ];
 
@@ -82,13 +76,13 @@ export const roadmap = [
     phase: "Phase 01",
     title: "Manifest",
     status: "Shipped",
-    body: "Gen 1 minted out its first wave. Site, contracts and the ghost den all went live without a single scare.",
+    body: "Gen 1 launched. Site, contracts and the ghost den all went live without a single scare.",
   },
   {
     phase: "Phase 02",
     title: "The Haunting",
     status: "In progress",
-    body: "Gen 2 — Afterlife Arcade — drops in one month with pixel traits, playable perks, and a free 1:1 claim for Gen 1 holders.",
+    body: "Gary Ghosts V2 launches " + gen2LaunchLabel + ".",
   },
   {
     phase: "Phase 03",
@@ -107,11 +101,11 @@ export const roadmap = [
 export const faqs = [
   {
     q: "What actually is Gary Ghost?",
-    a: "A ghost. Gary. The OG Collection is 750 hand-drawn Gary Ghosts on Ethereum — all minted out. Afterlife Arcade (Gen 2) is the follow-up.",
+    a: "A ghost. Gary. The OG Collection is 750 hand-drawn Gary Ghosts on Ethereum. Gary Ghosts V2 is the follow-up.",
   },
   {
     q: "How much does a ghost cost?",
-    a: `The mint sold out at ${gen1PriceEth} ETH plus gas, one ghost per transaction. New ones are bought from holders on the secondary market — the OpenSea floor was around ${gen1FloorEth} ETH at the time of writing.`,
+    a: `Mint a ghost for ${gen1PriceEth} ETH plus gas, one ghost per transaction. You can also browse holder listings on OpenSea.`,
   },
   {
     q: "Do I need a wallet?",
@@ -123,6 +117,6 @@ export const faqs = [
   },
   {
     q: "What does holding get me?",
-    a: "Ghost den access, the Gen 2 free claim, early access to every future drop, and a vote on where the Ectoplasm treasury goes.",
+    a: "Ownership of a Gary Ghost from the original collection. Explore Gary Ghosts V2 on its collection page.",
   },
 ];

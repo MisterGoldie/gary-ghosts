@@ -2,8 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 const nav = [
-  { href: "/mint", label: "Gen 1" },
-  { href: "/afterlife", label: "Gen 2" },
+  { href: "/mint", label: "OG" },
+  { href: "/v2", label: "V2" },
 ];
 
 export function SiteHeader() {
