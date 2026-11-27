@@ -79,7 +79,7 @@ export default function V2Page() {
         </div>
 
         <div className="panel overflow-hidden p-5 sm:p-7">
-          <Image src="/ggnew.png" alt="Gary Ghosts V2 artwork" width={2000} height={2000}
+          <Image src="/mainpromo.png" alt="Gary Ghosts V2 promotional artwork" width={3000} height={3000}
             priority sizes="(max-width: 1024px) 100vw, 45vw"
             className="aspect-square w-full object-contain mix-blend-multiply" />
         </div>
