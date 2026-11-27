@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Architects_Daughter, Caveat_Brush } from "next/font/google";
+// @ts-ignore Next.js processes this global CSS import.
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { SiteHeader } from "@/components/SiteHeader";
