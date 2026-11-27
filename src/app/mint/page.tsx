@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MintPanel } from "@/components/MintPanel";
 import {
+  explorerAddress,
   explorerToken,
   gen1Contract,
   gen1FloorEth,
@@ -104,18 +105,6 @@ export default function MintPage() {
               ))}
             </div>
           </section>
-
-          <p className="mt-8 break-all text-xs leading-relaxed text-muted">
-            Contract:{" "}
-            <a
-              href={explorerToken(gen1Contract)}
-              target="_blank"
-              rel="noreferrer"
-              className="font-mono text-bone/75 underline underline-offset-2 hover:text-wisp"
-            >
-              {gen1Contract}
-            </a>
-          </p>
         </div>
 
         <div className="lg:sticky lg:top-24">
@@ -128,6 +117,18 @@ export default function MintPage() {
           </p>
         </div>
       </div>
+
+      <p className="mt-12 break-all border-t border-hairline/70 pt-6 text-center text-xs leading-relaxed text-muted">
+        OG contract:{" "}
+        <a
+          href={explorerAddress(gen1Contract)}
+          target="_blank"
+          rel="noreferrer"
+          className="font-mono text-bone/75 underline underline-offset-2 hover:text-wisp"
+        >
+          {gen1Contract}
+        </a>
+      </p>
     </div>
   );
 }

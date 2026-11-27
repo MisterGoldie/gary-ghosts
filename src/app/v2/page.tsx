@@ -69,14 +69,6 @@ export default function V2Page() {
               </div>
             ))}
           </dl>
-
-          <p className="mt-8 break-all text-xs leading-relaxed text-muted">
-            Contract:{" "}
-            <a href={explorerAddress(gen2Contract)} target="_blank" rel="noreferrer"
-              className="font-mono text-bone/75 underline underline-offset-2 hover:text-wisp">
-              {gen2Contract}
-            </a>
-          </p>
         </div>
 
         <div className="panel overflow-hidden p-5 sm:p-7">
@@ -96,6 +88,18 @@ export default function V2Page() {
         </div>
         <Link href="/mint" className="btn btn-primary shrink-0">Mint OG collection</Link>
       </section>
+
+      <p className="mt-12 break-all border-t border-hairline/70 pt-6 text-center text-xs leading-relaxed text-muted">
+        V2 contract:{" "}
+        <a
+          href={explorerAddress(gen2Contract)}
+          target="_blank"
+          rel="noreferrer"
+          className="font-mono text-bone/75 underline underline-offset-2 hover:text-wisp"
+        >
+          {gen2Contract}
+        </a>
+      </p>
     </div>
   );
 }
