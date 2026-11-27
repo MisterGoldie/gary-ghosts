@@ -2,7 +2,7 @@ import { links } from "@/lib/config";
 
 const nav = [
   { label: "X", href: links.x },
-  { label: "Discord", href: links.discord },
+  { label: "Goldie", href: "https://goldiesnftart.xyz" },
   { label: "OpenSea", href: links.opensea },
 ];
 

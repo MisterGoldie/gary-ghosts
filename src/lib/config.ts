@@ -47,7 +47,7 @@ export const gen2LaunchLabel = gen2MintDate.toLocaleString("en-US", {
 export const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 
 export const links = {
-  x: process.env.NEXT_PUBLIC_LINK_X ?? "https://x.com",
+  x: process.env.NEXT_PUBLIC_LINK_X ?? "https://x.com/GoldiesNFTart",
   discord: process.env.NEXT_PUBLIC_LINK_DISCORD ?? "https://discord.com",
   opensea: process.env.NEXT_PUBLIC_LINK_OPENSEA ?? "https://opensea.io/collection/gary-ghosts",
   openseaV2: process.env.NEXT_PUBLIC_LINK_OPENSEA_V2 ?? "https://opensea.io/collection/gary-ghosts-v2",
