@@ -36,7 +36,7 @@ const ghostTypes = [
   {
     id: "childish",
     name: "The Childish Ghost",
-    image: "/childish.png",
+    image: "/childish-ghost.png",
     alt: "Hooded Childish Ghost holding a green trick-or-treat bucket",
     description:
       "The youngest ghost in the group, the Childish Ghost is a kid who just likes to have fun. Every day is a chance to play and find a new adventure.",
