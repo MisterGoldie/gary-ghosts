@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test:security": "node --test tests/mint-security.test.cjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.62.0",

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { formatEther, parseEther } from "viem";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { formatEther, parseEther, type Address } from "viem";
 import {
   useAccount,
   useBalance,
@@ -13,8 +13,6 @@ import {
 } from "wagmi";
 import { mintAbi } from "@/lib/abi";
 import {
-  explorerToken,
-  explorerTx,
   gen1Contract,
   gen1FloorEth,
   gen1MintConfigured,
@@ -23,9 +21,12 @@ import {
 import { errorMessage } from "@/lib/error";
 import { useHydrated } from "@/lib/useHydrated";
 import { targetChain } from "@/lib/wagmi";
+import { assertExactOgCode, confirmedMintToken, createMintRequest } from "@/lib/mint-target";
 import { WalletButton } from "./WalletButton";
 
 export function MintPanel() {
+  const explorerToken = (address: string) => `${targetChain.blockExplorers.default.url}/token/${address}`;
+  const explorerTx = (hash: string) => `${targetChain.blockExplorers.default.url}/tx/${hash}`;
   const hydrated = useHydrated();
   const { address, isConnected, chainId } = useAccount();
   const { switchChainAsync, isPending: isSwitching } = useSwitchChain();
@@ -63,10 +64,13 @@ export function MintPanel() {
 
   const { writeContractAsync, isPending: isSigning, error: writeError, reset } = useWriteContract();
   const [hash, setHash] = useState<`0x${string}` | undefined>();
+  const mintLock = useRef(false);
+  const [mintRecipient, setMintRecipient] = useState<Address>();
   const [isChecking, setIsChecking] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
   const receipt = useWaitForTransactionReceipt({ hash, chainId: targetChain.id });
-  const mintSucceeded = receipt.data?.status === "success";
+  const mintedTokenId = receipt.data && mintRecipient ? confirmedMintToken(receipt.data, mintRecipient) : undefined;
+  const mintSucceeded = mintedTokenId !== undefined;
 
   useEffect(() => {
     if (!mintSucceeded) return;
@@ -83,40 +87,34 @@ export function MintPanel() {
       : null;
 
   async function handleMint() {
-    if (!gen1MintConfigured || !address || isChecking || isSigning || hash) return;
+    if (!address || mintLock.current || isSigning || hash) return;
+    mintLock.current = true;
     setActionError(null);
-    if (wrongChain) {
-      try {
-        await switchChainAsync({ chainId: targetChain.id });
-      } catch (error) {
-        setActionError(errorMessage(error));
-      }
-      return;
-    }
-    if (!publicClient || onchainPrice === undefined) return;
-    setIsChecking(true);
-    reset();
     try {
-      // Check the real contract before asking the wallet to send a paid transaction.
-      const mintRequest = {
-        address: gen1Contract,
-        abi: mintAbi,
-        functionName: "GhostMint" as const,
-        account: address,
-        value: onchainPrice,
-      };
+      if (wrongChain) {
+        await switchChainAsync({ chainId: targetChain.id });
+        return;
+      }
+      if (!publicClient || onchainPrice === undefined) return;
+      setIsChecking(true);
+      reset();
+      assertExactOgCode(await publicClient.getCode({ address: gen1Contract }));
+      const { chainId: mintChainId, ...mintRequest } = createMintRequest(address, onchainPrice);
       await publicClient.simulateContract(mintRequest);
-      const txHash = await writeContractAsync({ ...mintRequest, chainId: targetChain.id });
+      const txHash = await writeContractAsync({ ...mintRequest, chainId: mintChainId });
+      setMintRecipient(address);
       setHash(txHash);
     } catch (error) {
       setActionError(errorMessage(error));
     } finally {
+      mintLock.current = false;
       setIsChecking(false);
     }
   }
 
   function resetMint() {
     setHash(undefined);
+    setMintRecipient(undefined);
     reset();
     setActionError(null);
   }
@@ -143,7 +141,8 @@ export function MintPanel() {
     Boolean(hash) ||
     (!wrongChain && (!publicClient || onchainPrice === undefined));
 
-  const failure = actionError ?? errorMessage(writeError) ?? errorMessage(receipt.error);
+  const failure = actionError ?? errorMessage(writeError) ?? errorMessage(receipt.error) ??
+    (receipt.isSuccess && !mintSucceeded ? "The transaction did not contain a matching NFT mint. Check its status before trying again." : null);
 
   return (
     <div className="panel p-5 sm:p-7">
@@ -159,7 +158,7 @@ export function MintPanel() {
               : "border-wisp/40 bg-wisp/10 !text-wisp"
           }`}
         >
-          {gen1MintConfigured ? "Live" : "Preview"}
+          Live
         </span>
       </div>
 
@@ -219,7 +218,7 @@ export function MintPanel() {
             <a href={explorerTx(hash)} target="_blank" rel="noreferrer" className="underline underline-offset-2">
               View transaction
             </a>
-            {receipt.isError && (
+            {(receipt.isError || (receipt.isSuccess && !mintSucceeded)) && (
               <button type="button" onClick={() => void receipt.refetch()} className="ml-3 underline underline-offset-2">
                 Check confirmation again
               </button>

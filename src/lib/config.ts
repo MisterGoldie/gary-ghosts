@@ -1,7 +1,7 @@
+import { OG_MAINNET_ADDRESS } from "./mint-target";
 const ZERO = "0x0000000000000000000000000000000000000000";
 
-/** Deployed Gen 1 contract — Gary Ghosts (OG Collection), 750 tokens. */
-const GEN1_DEFAULT = "0x396b3e128bb62a71813f4ef42bbe66ed2cc657df";
+/** Deployed V2 collection. */
 const GEN2_DEFAULT = "0x44fc0be497a6e882aa2c6751315e888df37bace6";
 
 function address(raw: string | undefined): `0x${string}` {
@@ -12,15 +12,16 @@ function address(raw: string | undefined): `0x${string}` {
 
 export const ZERO_ADDRESS = ZERO as `0x${string}`;
 
-/** Live collection (Gen 1). Override with NEXT_PUBLIC_GEN1_CONTRACT. */
-export const gen1Contract = address(process.env.NEXT_PUBLIC_GEN1_CONTRACT || GEN1_DEFAULT);
+/** Verified live OG contract on Ethereum mainnet. */
+if (process.env.NEXT_PUBLIC_GEN1_CONTRACT && process.env.NEXT_PUBLIC_GEN1_CONTRACT.toLowerCase() !== OG_MAINNET_ADDRESS) {
+  throw new Error("The live OG contract must match the verified Gary Ghosts address.");
+}
+export const gen1Contract = OG_MAINNET_ADDRESS;
 /** Upcoming collection (Gen 2). */
 export const gen2Contract = address(process.env.NEXT_PUBLIC_GEN2_CONTRACT || GEN2_DEFAULT);
 
 export const gen1MintConfigured = gen1Contract !== ZERO_ADDRESS;
 export const gen2MintConfigured = gen2Contract !== ZERO_ADDRESS;
-
-export const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID ?? 1) || 1;
 
 /** Fallback values; the panel prefers the live GHOST_PRICE / MAX_TOKENS reads. */
 export const gen1PriceEth = process.env.NEXT_PUBLIC_GEN1_PRICE_ETH ?? "0.05";

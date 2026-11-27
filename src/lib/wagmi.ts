@@ -1,9 +1,9 @@
 import { createConfig, http } from "wagmi";
-import { mainnet, sepolia } from "wagmi/chains";
+import { mainnet } from "wagmi/chains";
 import { coinbaseWallet, injected, walletConnect } from "wagmi/connectors";
-import { chainId, walletConnectProjectId } from "./config";
+import { walletConnectProjectId } from "./config";
 
-const chains = [mainnet, sepolia] as const;
+const chains = [mainnet] as const;
 
 export const wagmiConfig = createConfig({
   chains,
@@ -30,11 +30,11 @@ export const wagmiConfig = createConfig({
   ],
   transports: {
     [mainnet.id]: http(),
-    [sepolia.id]: http(),
   },
 });
 
-export const targetChain = chains.find((c) => c.id === chainId) ?? mainnet;
+// OG minting is pinned to Ethereum mainnet.
+export const targetChain = mainnet;
 
 declare module "wagmi" {
   interface Register {

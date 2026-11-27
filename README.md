@@ -4,10 +4,10 @@ Marketing + mint site for the **Gary Ghost** NFT brand. Two collections:
 
 | Collection | Status | Route |
 | --- | --- | --- |
-| Spectral Society (Gen 1) | Mint live | `/mint` |
+| OG | Mint live | `/mint` |
 | Gary Ghosts V2 | December 22, 2026 at 8:00 AM CST | `/v2` |
 
-Built with Next.js 15 (App Router), TypeScript, Tailwind CSS v4, wagmi v2 + viem.
+Built with Next.js 15 (App Router), TypeScript, Tailwind CSS v4, wagmi + viem.
 
 ```bash
 npm install
@@ -21,9 +21,8 @@ Environment variables are optional. OG minting defaults to the existing Gary Gho
 
 | Variable | Purpose |
 | --- | --- |
-| `NEXT_PUBLIC_GEN1_CONTRACT` | OG contract override. Defaults to `0x396b3e128bb62a71813f4ef42bbe66ed2cc657df`. |
+| `NEXT_PUBLIC_GEN1_CONTRACT` | Optional confirmation of the pinned OG address `0x396b3e128bb62a71813f4ef42bbe66ed2cc657df`. Other addresses are rejected. |
 | `NEXT_PUBLIC_GEN2_CONTRACT` | V2 contract override. Defaults to `0x44fc0be497a6e882aa2c6751315e888df37bace6`. |
-| `NEXT_PUBLIC_CHAIN_ID` | `1` (Ethereum) or `11155111` (Sepolia). Default `1`. |
 | `NEXT_PUBLIC_GEN1_PRICE_ETH` | Display/fallback price. Default `0.05`. Transactions use the on-chain `GHOST_PRICE`. |
 | `NEXT_PUBLIC_GEN2_MINT_DATE` | V2 countdown timestamp. Defaults to `2026-12-22T14:00:00.000Z` (8:00 AM CST). |
 | `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` | Adds the WalletConnect connector when set. |
@@ -39,6 +38,6 @@ Environment variables are optional. OG minting defaults to the existing Gary Gho
 
 ## Migration note
 
-OG contract reads, mint transactions, balances, and confirmations use the configured target chain (Ethereum mainnet by default), even when the wallet starts on a different chain.
+The OG mint uses Ethereum mainnet for contract reads, wallet balances, transactions, and confirmations. It verifies the OG bytecode, exact mint price, and the NFT mint event before reporting success.
 
 Injected browser wallets and Coinbase Wallet work without extra configuration. WalletConnect QR/mobile connections additionally require `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID`.
