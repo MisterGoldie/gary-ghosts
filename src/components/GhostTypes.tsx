@@ -25,6 +25,22 @@ const ghostTypes = [
     description:
       "The Responsible Ghost looks after his ghost pet, making sure his little companion is safe, happy, and never left behind.",
   },
+  {
+    id: "standard",
+    name: "The Standard Ghost",
+    image: "/standard.png",
+    alt: "Orange Standard Ghost with a simple smile and a patched sheet",
+    description:
+      "A pretty average ghost. The Standard Ghost keeps things simple and takes each day as it comes.",
+  },
+  {
+    id: "childish",
+    name: "The Childish Ghost",
+    image: "/childish.png",
+    alt: "Hooded Childish Ghost holding a green trick-or-treat bucket",
+    description:
+      "The youngest ghost in the group, the Childish Ghost is a kid who just likes to have fun. Every day is a chance to play and find a new adventure.",
+  },
 ];
 
 export function GhostTypes() {
@@ -37,7 +53,7 @@ export function GhostTypes() {
 
       <div className="mt-8 grid grid-cols-2 items-start gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
         {ghostTypes.map((ghost) => (
-          <details key={ghost.id} className="group min-w-0">
+          <details key={ghost.id} className="group panel min-w-0 overflow-hidden transition-colors open:border-hex/50">
             <summary className="cursor-pointer list-none rounded-xl p-1 focus-visible:-outline-offset-4 [&::-webkit-details-marker]:hidden">
               <Image
                 src={ghost.image}
@@ -54,7 +70,7 @@ export function GhostTypes() {
               <span className="mt-1 block text-center text-xs text-muted group-open:hidden">More information</span>
               <span className="mt-1 hidden text-center text-xs text-muted group-open:block">Hide details</span>
             </summary>
-            <div className="mt-3 border-t border-hairline px-1 pb-2 pt-3 text-sm leading-relaxed text-muted">
+            <div className="mt-3 border-t border-hairline px-3 pb-3 pt-3 text-sm leading-relaxed text-muted">
               <p>{ghost.description}</p>
             </div>
           </details>
