@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { HeroCrossfade } from "@/components/HeroCrossfade";
+import { HomeTagline } from "@/components/HomeTagline";
 
 export default function HomePage() {
   return (
@@ -10,9 +11,7 @@ export default function HomePage() {
         Gary <span className="text-wisp">Ghosts</span>
       </h1>
 
-      <p className="mt-4 max-w-sm text-base leading-relaxed text-muted">
-        Same ghost. New era.
-      </p>
+      <HomeTagline />
 
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
         <Link href="/mint" className="btn btn-primary">
