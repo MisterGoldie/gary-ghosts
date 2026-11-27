@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Countdown } from "@/components/Countdown";
+import { GhostTypes } from "@/components/GhostTypes";
 import {
   explorerAddress,
   gen2Contract,
@@ -83,6 +84,8 @@ export default function V2Page() {
             className="aspect-square w-full object-contain mix-blend-multiply" />
         </div>
       </div>
+
+      <GhostTypes />
 
       <section className="panel mt-16 flex flex-col items-start justify-between gap-6 p-7 sm:flex-row sm:items-center sm:p-9">
         <div>
