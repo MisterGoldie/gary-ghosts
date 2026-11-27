@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 const ghostTypes = [
   {
@@ -43,7 +46,40 @@ const ghostTypes = [
   },
 ];
 
+type GhostType = (typeof ghostTypes)[number];
+
 export function GhostTypes() {
+  const [selected, setSelected] = useState<GhostType | null>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!selected || !dialog) return;
+    const source = triggerRef.current?.getBoundingClientRect();
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    dialog.showModal();
+
+    let animation: Animation | undefined;
+    if (source && !window.matchMedia("(prefers-reduced-motion: reduce)").matches && typeof dialog.animate === "function") {
+      const target = dialog.getBoundingClientRect();
+      const x = source.left + source.width / 2 - target.left - target.width / 2;
+      const y = source.top + source.height / 2 - target.top - target.height / 2;
+      const scale = Math.min(source.width / target.width, source.height / target.height);
+      animation = dialog.animate([
+        { transform: "translate(" + x + "px, " + y + "px) scale(" + scale + ")", opacity: 0.4 },
+        { transform: "translate(0, 0) scale(1)", opacity: 1 },
+      ], { duration: 320, easing: "cubic-bezier(0.16, 1, 0.3, 1)" });
+    }
+
+    return () => {
+      animation?.cancel();
+      document.body.style.overflow = previousOverflow;
+      if (dialog.open) dialog.close();
+    };
+  }, [selected]);
+
   return (
     <section className="mt-16" aria-labelledby="ghost-types-heading">
       <h2 id="ghost-types-heading" className="font-display text-3xl font-semibold sm:text-4xl">
@@ -53,29 +89,70 @@ export function GhostTypes() {
 
       <div className="mt-8 grid grid-cols-2 items-start gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
         {ghostTypes.map((ghost) => (
-          <details key={ghost.id} className="group panel min-w-0 overflow-hidden transition-colors open:border-hex/50">
-            <summary className="cursor-pointer list-none rounded-xl p-1 focus-visible:-outline-offset-4 [&::-webkit-details-marker]:hidden">
-              <Image
-                src={ghost.image}
-                alt={ghost.alt}
-                width={2000}
-                height={2000}
-                sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 210px"
-                className="aspect-square w-full object-contain mix-blend-multiply"
-              />
-              <span className="mt-3 flex min-h-12 items-center justify-center gap-2">
-                <span className="font-display text-base font-semibold leading-snug sm:text-lg">{ghost.name}</span>
-                <span aria-hidden="true" className="shrink-0 text-xl text-wisp transition-transform duration-200 group-open:rotate-45 motion-reduce:transition-none">+</span>
-              </span>
-              <span className="mt-1 block text-center text-xs text-muted group-open:hidden">More information</span>
-              <span className="mt-1 hidden text-center text-xs text-muted group-open:block">Hide details</span>
-            </summary>
-            <div className="mt-3 border-t border-hairline px-3 pb-3 pt-3 text-sm leading-relaxed text-muted">
-              <p>{ghost.description}</p>
-            </div>
-          </details>
+          <button
+            key={ghost.id}
+            type="button"
+            aria-haspopup="dialog"
+            aria-controls="ghost-detail-dialog"
+            onClick={(event) => { triggerRef.current = event.currentTarget; setSelected(ghost); }}
+            className="group panel min-w-0 cursor-pointer overflow-hidden p-1 text-bone transition-colors hover:border-wisp/50 focus-visible:-outline-offset-4"
+          >
+            <Image
+              src={ghost.image}
+              alt={ghost.alt}
+              width={2000}
+              height={2000}
+              sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 210px"
+              className="aspect-square w-full object-contain mix-blend-multiply"
+            />
+            <span className="mt-3 flex min-h-12 items-center justify-center gap-2">
+              <span className="font-display text-base font-semibold leading-snug sm:text-lg">{ghost.name}</span>
+              <span aria-hidden="true" className="shrink-0 text-xl text-wisp">+</span>
+            </span>
+            <span className="mt-1 block text-center text-xs text-muted">More information</span>
+          </button>
         ))}
       </div>
+
+      <dialog
+        ref={dialogRef}
+        id="ghost-detail-dialog"
+        aria-labelledby="ghost-detail-name"
+        aria-describedby="ghost-detail-description"
+        className="panel fixed inset-0 m-auto h-fit max-h-[90dvh] w-[92vw] max-w-3xl overflow-y-auto p-0 text-bone backdrop:bg-black/45 backdrop:backdrop-blur-sm"
+        onClose={() => {
+          setSelected(null);
+          if (triggerRef.current?.isConnected) triggerRef.current.focus({ preventScroll: true });
+        }}
+        onClick={(event) => {
+          if (event.target !== event.currentTarget) return;
+          const bounds = event.currentTarget.getBoundingClientRect();
+          if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) event.currentTarget.close();
+        }}
+      >
+        {selected && (
+          <div className="relative p-5 pt-16 sm:p-8 sm:pt-16">
+            <button type="button" autoFocus onClick={() => dialogRef.current?.close()} className="btn btn-outline absolute right-4 top-4 min-h-11 !px-4 !py-2">
+              Close
+            </button>
+            <div className="grid items-center gap-5 sm:grid-cols-[1.15fr_1fr] sm:gap-8">
+              <Image
+                src={selected.image}
+                alt={selected.alt}
+                loading="eager"
+                width={2000}
+                height={2000}
+                sizes="(max-width: 640px) 90vw, 420px"
+                className="mx-auto aspect-square max-h-[45dvh] w-full object-contain mix-blend-multiply sm:max-h-[65dvh]"
+              />
+              <div>
+                <h3 id="ghost-detail-name" className="font-display text-3xl font-semibold sm:text-4xl">{selected.name}</h3>
+                <p id="ghost-detail-description" className="mt-4 text-base leading-relaxed text-muted">{selected.description}</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </dialog>
     </section>
   );
 }
