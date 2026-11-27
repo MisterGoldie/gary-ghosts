@@ -11,7 +11,7 @@ export default function HomePage() {
       </h1>
 
       <p className="mt-4 max-w-sm text-base leading-relaxed text-muted">
-        Two collections. One extremely polite ghost.
+        Same ghost. New era.
       </p>
 
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
