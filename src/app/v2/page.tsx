@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import promoArtwork from "../../../public/mainpromo.png";
 import { Countdown } from "@/components/Countdown";
 import { GhostTypes } from "@/components/GhostTypes";
 import {
@@ -79,8 +80,9 @@ export default function V2Page() {
         </div>
 
         <div className="panel overflow-hidden p-5 sm:p-7">
-          <Image src="/mainpromo.png" alt="Gary Ghosts V2 promotional artwork" width={3000} height={3000}
-            priority sizes="(max-width: 1024px) 100vw, 45vw"
+          <Image src={promoArtwork} alt="Gary Ghosts V2 promotional artwork" width={3000} height={3000}
+            priority fetchPriority="high" placeholder="blur"
+            sizes="(min-width: 1152px) 452px, (min-width: 1024px) calc(47.5vw - 96px), (min-width: 640px) calc(100vw - 98px), calc(100vw - 82px)"
             className="aspect-square w-full object-contain mix-blend-multiply" />
         </div>
       </div>

@@ -2,12 +2,18 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import artisticArtwork from "../../public/artistic.png";
+import fighterArtwork from "../../public/fighter.png";
+import responsibleArtwork from "../../public/responsible.png";
+import standardArtwork from "../../public/standard.png";
+import childishArtwork from "../../public/childish-ghost.png";
+import sideprofileArtwork from "../../public/sideprofile.png";
 
 const ghostTypes = [
   {
     id: "artistic",
     name: "The Artistic Ghost",
-    image: "/artistic.png",
+    image: artisticArtwork,
     alt: "Blue Artistic Ghost holding a paintbrush and a palette",
     description:
       "A creative spirit with a paintbrush in one hand and a palette in the other. The Artistic Ghost is always looking for a new way to express itself.",
@@ -15,7 +21,7 @@ const ghostTypes = [
   {
     id: "fighter",
     name: "The Fighter Ghost",
-    image: "/fighter.png",
+    image: fighterArtwork,
     alt: "Fighter Ghost wearing red boxing gloves",
     description:
       "With boxing gloves on and a heart that never quits, the Fighter Ghost brings determination to every challenge. Even when knocked down, it gets right back up.",
@@ -23,7 +29,7 @@ const ghostTypes = [
   {
     id: "responsible",
     name: "The Responsible Ghost",
-    image: "/responsible.png",
+    image: responsibleArtwork,
     alt: "Responsible Ghost with a small white ghost pet",
     description:
       "The Responsible Ghost looks after his ghost pet, making sure his little companion is safe, happy, and never left behind.",
@@ -31,7 +37,7 @@ const ghostTypes = [
   {
     id: "standard",
     name: "The Standard Ghost",
-    image: "/standard.png",
+    image: standardArtwork,
     alt: "Orange Standard Ghost with a simple smile and a patched sheet",
     description:
       "A pretty average ghost. The Standard Ghost keeps things simple and takes each day as it comes.",
@@ -39,7 +45,7 @@ const ghostTypes = [
   {
     id: "childish",
     name: "The Childish Ghost",
-    image: "/childish-ghost.png",
+    image: childishArtwork,
     alt: "Hooded Childish Ghost holding a green trick-or-treat bucket",
     description:
       "The youngest ghost in the group, the Childish Ghost is a kid who just likes to have fun. Every day is a chance to play and find a new adventure.",
@@ -47,7 +53,7 @@ const ghostTypes = [
   {
     id: "sideprofile",
     name: "The Side Profile Ghost",
-    image: "/sideprofile.png",
+    image: sideprofileArtwork,
     alt: "Purple Side Profile Ghost holding a paintbrush",
     description:
       "The Side Profile Ghost loves being the center of attention. He knows his best angle and is always ready to steal the spotlight.",
@@ -110,7 +116,10 @@ export function GhostTypes() {
               alt={ghost.alt}
               width={2000}
               height={2000}
-              sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 180px"
+              loading="eager"
+              fetchPriority="low"
+              placeholder="blur"
+              sizes="(min-width: 1152px) 162px, (min-width: 1024px) calc(16.667vw - 30px), (min-width: 640px) calc(33.333vw - 34px), calc(50vw - 38px)"
               className="aspect-square w-full object-contain mix-blend-multiply"
             />
             <span className="relative mt-3 flex min-h-12 items-center justify-center px-5">
@@ -148,9 +157,11 @@ export function GhostTypes() {
                 src={selected.image}
                 alt={selected.alt}
                 loading="eager"
+                fetchPriority="high"
+                placeholder="blur"
                 width={2000}
                 height={2000}
-                sizes="(max-width: 640px) 90vw, 420px"
+                sizes="(min-width: 835px) 359px, (min-width: 640px) calc(49.21vw - 52.42px), calc(92vw - 42px)"
                 className="mx-auto aspect-square max-h-[45dvh] w-full object-contain mix-blend-multiply sm:max-h-[65dvh]"
               />
               <div className="text-center">

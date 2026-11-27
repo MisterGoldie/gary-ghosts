@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import logo from "../../public/sidelogo.png";
 
 const nav = [
   { href: "/mint", label: "OG" },
@@ -12,7 +13,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-20 w-full max-w-5xl items-center justify-between gap-4 px-5">
         <Link href="/" className="flex items-center">
           <Image
-            src="/sidelogo.png"
+            src={logo}
             alt="Gary Ghost"
             width={1000}
             height={630}

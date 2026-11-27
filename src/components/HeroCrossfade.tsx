@@ -2,10 +2,12 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import ogArtwork from "../../public/ggog.png";
+import v2Artwork from "../../public/ggnew.png";
 
 const frames = [
   {
-    src: "/ggog.png",
+    src: ogArtwork,
     alt: "Gary Ghost in a patched orange sheet, blue cap and sneakers",
     width: 1000,
     height: 1342,
@@ -14,7 +16,7 @@ const frames = [
     scale: 1,
   },
   {
-    src: "/ggnew.png",
+    src: v2Artwork,
     alt: "Gary Ghost redrawn in detail with a ragged sheet, cap and combat boots",
     width: 2000,
     height: 2000,
@@ -45,13 +47,16 @@ export function HeroCrossfade() {
         <div className="absolute inset-0 isolate">
           {frames.map((frame, index) => (
             <Image
-              key={frame.src}
+              key={frame.src.src}
               src={frame.src}
               alt={frame.alt}
               width={frame.width}
               height={frame.height}
-              priority
-              sizes="(max-width: 640px) 84vw, 26rem"
+              priority={index === 0}
+              loading={index === 0 ? undefined : "eager"}
+              fetchPriority={index === 0 ? "high" : "low"}
+              placeholder="blur"
+              sizes="(max-width: 456px) calc(100vw - 40px), 416px"
               onLoad={() => setLoaded((previous) => previous.map((value, position) => position === index || value))}
               aria-hidden={index !== active}
               style={{ transform: `scale(${frame.scale})` }}
