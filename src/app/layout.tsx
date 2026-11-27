@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Architects_Daughter, Caveat_Brush } from "next/font/google";
 // @ts-ignore Next.js processes this global CSS import.
 import "./globals.css";
@@ -56,6 +57,7 @@ export default function RootLayout({
             <SiteFooter />
           </div>
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
