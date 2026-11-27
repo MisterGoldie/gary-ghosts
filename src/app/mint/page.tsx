@@ -18,8 +18,8 @@ export const metadata: Metadata = {
 
 const notes = [
   {
-    title: "Art wit meaning",
-    body: "Based on one of Gary, Indiana's nicknames. Gary Ghosts originally released in April 2022",
+    title: "Art with meaning",
+    body: "Based on one of Gary, Indiana's nicknames. Gary Ghosts originally released in April 2022 following the release of the Scary Garys",
   },
   {
     title: "Mint a ghost",
