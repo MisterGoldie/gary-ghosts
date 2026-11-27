@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 const taglines = [
   "Two collections. Multiple creepy ghosts",
-  "Same ghost. New era.",
+  "Same ghosts. New era.",
   "Born and raised in Gary, Indiana",
 ];
 
