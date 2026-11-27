@@ -52,7 +52,7 @@ export default function MintPage() {
       <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_0.85fr] lg:items-start">
         <div>
           <span className="chip border-spectral/40 bg-spectral/10 !text-spectral">
-            <span className="h-1.5 w-1.5 rounded-full bg-spectral" /> Gen 1
+            <span className="h-1.5 w-1.5 rounded-full bg-spectral" /> OG
           </span>
           <h1 className="mt-4 font-display text-4xl font-bold leading-tight sm:text-5xl">
             Gary Ghosts
