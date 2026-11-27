@@ -44,6 +44,14 @@ const ghostTypes = [
     description:
       "The youngest ghost in the group, the Childish Ghost is a kid who just likes to have fun. Every day is a chance to play and find a new adventure.",
   },
+  {
+    id: "sideprofile",
+    name: "The Side Profile Ghost",
+    image: "/sideprofile.png",
+    alt: "Purple Side Profile Ghost holding a paintbrush",
+    description:
+      "The Side Profile Ghost loves being the center of attention. He knows his best angle and is always ready to steal the spotlight.",
+  },
 ];
 
 type GhostType = (typeof ghostTypes)[number];
@@ -87,7 +95,7 @@ export function GhostTypes() {
       </h2>
       <p className="mt-3 text-sm text-muted">Pick a ghost to learn more about it.</p>
 
-      <div className="mt-8 grid grid-cols-2 items-start gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="mt-8 grid grid-cols-2 items-start gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-6">
         {ghostTypes.map((ghost) => (
           <button
             key={ghost.id}
@@ -102,7 +110,7 @@ export function GhostTypes() {
               alt={ghost.alt}
               width={2000}
               height={2000}
-              sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 210px"
+              sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 180px"
               className="aspect-square w-full object-contain mix-blend-multiply"
             />
             <span className="relative mt-3 flex min-h-12 items-center justify-center px-5">
