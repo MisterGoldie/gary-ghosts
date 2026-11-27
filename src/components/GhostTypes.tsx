@@ -96,10 +96,10 @@ export function GhostTypes() {
 
   return (
     <section className="mt-16" aria-labelledby="ghost-types-heading">
-      <h2 id="ghost-types-heading" className="font-display text-3xl font-semibold sm:text-4xl">
+      <h2 id="ghost-types-heading" className="text-center font-display text-3xl font-semibold sm:text-4xl">
         What kind of ghost are you?
       </h2>
-      <p className="mt-3 text-sm text-muted">Pick a ghost to learn more about it.</p>
+      <p className="mt-3 text-center text-sm text-muted">Pick a ghost to learn more about them.</p>
 
       <div className="mt-8 grid grid-cols-2 items-start gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-6">
         {ghostTypes.map((ghost) => (
