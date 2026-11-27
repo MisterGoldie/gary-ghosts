@@ -18,7 +18,7 @@ const ghostTypes = [
     image: "/fighter.png",
     alt: "Fighter Ghost wearing red boxing gloves",
     description:
-      "With boxing gloves on and a grin that never quits, the Fighter Ghost brings determination to every challenge. Even when knocked down, it gets right back up.",
+      "With boxing gloves on and a heart that never quits, the Fighter Ghost brings determination to every challenge. Even when knocked down, it gets right back up.",
   },
   {
     id: "responsible",
