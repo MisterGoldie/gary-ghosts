@@ -10,7 +10,7 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-hairline/70">
       <div className="mx-auto flex w-full max-w-5xl flex-col items-center justify-between gap-3 px-5 py-7 text-xs text-muted sm:flex-row">
-        <p>© {new Date().getFullYear()} Scary Garys</p>
+        <p>© {new Date().getFullYear()} Scary Garys LLC</p>
         <nav className="flex items-center gap-6">
           {nav.map((item) => (
             <a
