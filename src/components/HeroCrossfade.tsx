@@ -22,46 +22,44 @@ const frames = [
   },
 ];
 
-const holdMs = 10_000;
+const holdMs = 7_000;
 
 export function HeroCrossfade() {
   const [active, setActive] = useState(0);
-  const [instant, setInstant] = useState(false);
+  const [loaded, setLoaded] = useState(() => frames.map(() => false));
+  const ready = loaded.every(Boolean);
 
   useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setInstant(query.matches);
-    sync();
-    query.addEventListener("change", sync);
-    return () => query.removeEventListener("change", sync);
-  }, []);
-
-  useEffect(() => {
+    if (!ready) return;
     const id = window.setInterval(
       () => setActive((index) => (index + 1) % frames.length),
       holdMs,
     );
     return () => window.clearInterval(id);
-  }, []);
+  }, [ready]);
 
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-[26rem] overflow-hidden">
-      {frames.map((frame, index) => (
-        <Image
-          key={frame.src}
-          src={frame.src}
-          alt={frame.alt}
-          width={frame.width}
-          height={frame.height}
-          priority
-          sizes="(max-width: 640px) 84vw, 26rem"
-          aria-hidden={index !== active}
-          style={{ transform: `scale(${frame.scale})` }}
-          className={`pointer-events-none absolute inset-0 h-full w-full object-contain mix-blend-multiply transition-opacity ease-out ${
-            instant ? "duration-0" : "duration-[1500ms]"
-          } ${index === active ? "opacity-100" : "opacity-0"}`}
-        />
-      ))}
+    <div className="relative mx-auto aspect-square w-full max-w-[26rem] overflow-hidden mix-blend-multiply">
+      {/* Blend the two frames together before blending the group with the page. */}
+      <div className="absolute inset-0 isolate">
+        {frames.map((frame, index) => (
+          <Image
+            key={frame.src}
+            src={frame.src}
+            alt={frame.alt}
+            width={frame.width}
+            height={frame.height}
+            priority
+            sizes="(max-width: 640px) 84vw, 26rem"
+            onLoad={() => setLoaded((previous) => previous.map((value, position) => position === index || value))}
+            aria-hidden={index !== active}
+            style={{ transform: `scale(${frame.scale})` }}
+            className={`pointer-events-none absolute inset-0 h-full w-full object-contain mix-blend-plus-lighter transition-opacity duration-[1800ms] ease-in-out will-change-[opacity] motion-reduce:transition-none ${
+              index === active ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        ))}
+      </div>
     </div>
   );
 }
