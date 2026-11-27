@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const nav = [
@@ -8,9 +9,17 @@ const nav = [
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-hairline/70 bg-void/85 backdrop-blur-md">
-      <div className="mx-auto flex h-16 w-full max-w-5xl items-center justify-between gap-4 px-5">
-        <Link href="/" className="font-display text-lg font-bold tracking-tight">
-          Gary<span className="text-wisp">Ghost</span>
+      <div className="mx-auto flex h-20 w-full max-w-5xl items-center justify-between gap-4 px-5">
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/sidelogo.png"
+            alt="Gary Ghost"
+            width={1000}
+            height={630}
+            priority
+            sizes="96px"
+            className="h-14 w-auto mix-blend-multiply"
+          />
         </Link>
 
         <nav className="flex items-center gap-6">
